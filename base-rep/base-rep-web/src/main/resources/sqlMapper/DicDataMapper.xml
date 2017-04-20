@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.camelot.dao.DicDataDAO" >
+  <resultMap id="BaseResultMap" type="com.camelot.domain.DicDataBean" >
+    <id column="dic_id" property="dicId"  />
+    <result column="pid" property="pid"  />
+    <result column="dic_name" property="dicName"  />
+    <result column="dic_identify" property="dicIdentify"  />
+    <result column="dic_demo" property="dicDemo"  />
+    <result column="create_dt" property="createDt"  />
+    <result column="create_by" property="createBy"  />
+    <result column="modify_dt" property="modifyDt"  />
+    <result column="modify_by" property="modifyBy"  />
+    <result column="del_flag" property="delFlag"  />
+    <result column="dic_code" property="dicCode"  />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dic_id, pid, dic_name, dic_identify, dic_demo, create_dt, create_by, modify_dt, modify_by, 
+    del_flag, dic_code
+  </sql>
+ 
+  
+    <!-- Where子句 -->
+  <sql id="Where">
+  	where del_flag = 0
+  	<if test="null != entity ">
+  		<if test="null != entity.dicName">
+  			and dic_name like CONCAT('%',#{entity.dicName},'%')
+  		</if>
+  		<if test="null != entity.pid">
+  			and pid = #{entity.pid}
+  		</if>
+  		<if test="null != entity.dicId">
+  			and  dic_id = #{entity.dicId}
+  		</if>
+  	</if>
+  </sql>
+  
+  
+  <!-- 存储表名 -->
+  <sql id="Table_Name">
+  	dic_data
+  </sql>
+  
+  
+  <!-- 通过id获得 -->
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from 
+    <include refid="Table_Name"></include>
+    where del_flag = 0 and   dic_id = #{id}
+  </select>
+  
+  
+  <!-- mysql 分页尾 -->
+  <sql id="pagination_tail">
+	  limit #{page.pageOffset} , #{page.rows}
+  </sql>
+  
+  
+  <!-- 查询数据总个数 -->
+  <select id="queryCount" resultType="java.lang.Long">
+	  select count(1) from 
+	  <include refid="Table_Name"></include>
+	  <include refid="Where"></include>
+  </select>  
+  
+
+
+  <!-- 查询数据字典分页数据 -->
+  <select id="queryList" resultMap="BaseResultMap">
+	  select 
+	  <include refid="Base_Column_List"></include>
+	  from 
+	  <include refid="Table_Name"></include>
+	  <include refid="Where"></include>
+	  <include refid="pagination_tail" />
+  </select>   
+  
+  
+  <!-- 删除 -->
+  <update id="delete" parameterType="java.lang.Long">
+  	update 
+  	dic_data t set 
+  		t.del_flag = 1,
+  		modify_dt = now()
+  	where t.dic_id = #{id}
+  </update>
+  
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="com.camelot.domain.DicDataBean" useGeneratedKeys="true" keyProperty="dicId" >
+    insert into dic_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="dicName != null" >
+        dic_name,
+      </if>
+      <if test="dicIdentify != null" >
+        dic_identify,
+      </if>
+      <if test="dicDemo != null" >
+        dic_demo,
+      </if>
+        create_dt,
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+        <if test="dicCode != null" >
+            dic_code,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid},
+      </if>
+      <if test="dicName != null" >
+        #{dicName},
+      </if>
+      <if test="dicIdentify != null" >
+        #{dicIdentify},
+      </if>
+      <if test="dicDemo != null" >
+        #{dicDemo},
+      </if>
+		now(),
+      <if test="createBy != null" >
+        #{createBy},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag},
+      </if>
+        <if test="dicCode != null" >
+            dic_code,
+        </if>
+    </trim>
+  </insert>
+  
+  
+  <!-- 选择性修改 -->
+  <update id="updateBySelect" parameterType="com.camelot.domain.DicDataBean" >
+    update dic_data
+    <set >
+      <if test="pid != null" >
+        pid = #{pid},
+      </if>
+      <if test="dicName != null" >
+        dic_name = #{dicName},
+      </if>
+      <if test="dicIdentify != null" >
+        dic_identify = #{dicIdentify},
+      </if>
+      <if test="dicDemo != null" >
+        dic_demo = #{dicDemo},
+      </if>
+        modify_dt = now(),
+      <if test="modifyBy != null" >
+        modify_by = #{modifyBy},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag},
+      </if>
+        <if test="delFlag != null" >
+            del_flag = #{delFlag},
+        </if>
+        <if test="dicCode != null" >
+            dic_code = #{dicCode},
+        </if>
+    </set>
+    where dic_id = #{dicId}
+  </update>
+  
+  
+  <!-- 修改 -->
+  <update id="update" parameterType="com.camelot.domain.DicDataBean" >
+    update dic_data
+    set pid = #{pid},
+      dic_name = #{dicName},
+      dic_identify = #{dicIdentify},
+      dic_demo = #{dicDemo},
+      modify_dt = now(),
+      modify_by = #{modifyBy},
+      del_flag = #{delFlag},
+      dic_code = #{dicCode}
+    where dic_id = #{dicId}
+  </update>
+  
+  
+  <!-- 通过一级节点的唯一标识符查询二级节点 -->
+  <select id="querySecondLevelListByIdentify" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	 select 
+  	 <include refid="Base_Column_List"></include>
+  	 from 
+  	 <include refid="Table_Name"></include>
+  	 where del_flag = 0
+  	 	   and pid in (-1,
+				(select c.dic_id
+				from 
+				<include refid="Table_Name"></include>  c
+				where c.del_flag = 0
+					  and c.dic_identify = #{identify}	
+				) 	   
+  	 	   )
+  </select>
+  
+  
+  <!-- 检测第一节点是否唯一 -->
+  <select id="queryFirstLevelUnique"  parameterType="java.lang.String"   resultType="java.lang.Long" >
+  	 select count(*) 
+  	 from 
+  	 <include refid="Table_Name"></include>
+  	 where del_flag = 0 
+  	 	   and dic_identify = #{dicIdentify}
+  </select>
+  
+  <!-- 查询全部 -->
+  <select id="queryAll" resultMap="BaseResultMap">
+   	 select 
+  	 <include refid="Base_Column_List"></include>
+  	 from 
+  	 <include refid="Table_Name"></include> 	
+	  <include refid="Where"></include>  	 
+  </select>
+  
+</mapper>

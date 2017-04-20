@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						   http://www.springframework.org/schema/context
+						   http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<description>Spring Configuration</description>
+
+
+	<!-- 启用spring mvc 注解 -->
+	<context:annotation-config />
+	<!-- 使用Annotation自动注册Bean -->
+	<context:component-scan base-package="com.camelot"><!-- base-package 如果多个，用“,”分隔 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<import resource="spring/spring-config-jdbc.xml" />
+	<import resource="spring/spring-config-transaction.xml" />
+	<import resource="spring-mybatis/mybatis-config.xml" />
+</beans>

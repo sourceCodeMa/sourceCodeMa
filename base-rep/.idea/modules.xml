@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/base-rep.iml" filepath="$PROJECT_DIR$/base-rep.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-rep-dao/base-rep-dao.iml" filepath="$PROJECT_DIR$/base-rep-dao/base-rep-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-rep-domain/base-rep-domain.iml" filepath="$PROJECT_DIR$/base-rep-domain/base-rep-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-rep-export/base-rep-export.iml" filepath="$PROJECT_DIR$/base-rep-export/base-rep-export.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-rep-service/base-rep-service.iml" filepath="$PROJECT_DIR$/base-rep-service/base-rep-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-rep-web/base-rep-web.iml" filepath="$PROJECT_DIR$/base-rep-web/base-rep-web.iml" />
+    </modules>
+  </component>
+</project>
